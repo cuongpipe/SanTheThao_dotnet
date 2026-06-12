@@ -1,10 +1,10 @@
 /* ============================================================
    SÂN THỂ THAO — Premium Sport UI
    Direction: Dynamic / Athletic / Premium Dark-Light Hybrid
-   Font: Outfit (display) + DM Sans (body)
+   Font: Montserrat (display) + Inter (body)
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ===== TOKENS ===== */
 :root {
@@ -53,7 +53,7 @@ html {
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   background: var(--lighter);
   color: var(--dark);
   font-size: 15px;
@@ -68,7 +68,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.02em;
@@ -102,7 +102,7 @@ h6 {
 }
 
 .navbar-brand {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 800;
   font-size: 1.35rem;
   color: white !important;
@@ -119,8 +119,8 @@ h6 {
 }
 
 .navbar .nav-link {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.75) !important;
   padding: 0.45rem 0.85rem !important;
@@ -296,7 +296,7 @@ main,
 }
 
 .hero-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: clamp(2.5rem, 7vw, 5rem);
   font-weight: 900;
   line-height: 1.05;
@@ -310,6 +310,7 @@ main,
 }
 
 .hero-title .stroke {
+  font-family: 'Outfit', sans-serif; 
   -webkit-text-stroke: 2px white;
   color: transparent;
 }
@@ -337,7 +338,7 @@ main,
 }
 
 .hero-stat-num {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 2rem;
   font-weight: 800;
   color: white;
@@ -437,7 +438,7 @@ main,
 }
 
 .section-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -446,7 +447,7 @@ main,
 
 /* ===== BUTTONS ===== */
 .btn {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   border-radius: var(--r-sm) !important;
   transition: var(--t) !important;
@@ -639,7 +640,7 @@ main,
   border-radius: var(--r-sm) !important;
   border: 1.5px solid #e2e8f0 !important;
   padding: 0.6rem 0.9rem !important;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   transition: var(--t);
   background: white;
   font-size: 0.9rem;
@@ -653,7 +654,7 @@ main,
 }
 
 .form-label {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 0.85rem;
   color: var(--dark2);
@@ -667,7 +668,7 @@ main,
 /* ===== BADGES ===== */
 .badge {
   border-radius: 6px !important;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600 !important;
   padding: 0.3em 0.65em !important;
   font-size: 0.72rem !important;
@@ -680,7 +681,7 @@ main,
 }
 
 .table thead th {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -919,7 +920,7 @@ main,
 }
 
 .footer-brand {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 800;
   font-size: 1.4rem;
   color: white;
@@ -931,7 +932,7 @@ main,
 }
 
 .footer-heading {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
