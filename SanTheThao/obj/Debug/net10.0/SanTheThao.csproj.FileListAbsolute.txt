@@ -687,3 +687,4 @@ D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\refint\SanTheThao.dll
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.pdb
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.genruntimeconfig.cache
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\ref\SanTheThao.dll
+D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.sourcelink.json
