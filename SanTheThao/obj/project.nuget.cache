@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "KJjtg++/2xk=",
+  "dgSpecHash": "lpYRQ18OEvM=",
   "success": true,
   "projectFilePath": "D:\\dotnet-cuoiky\\SanTheThao\\SanTheThao.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pipe\\.nuget\\packages\\aspnet.security.oauth.github\\10.0.0\\aspnet.security.oauth.github.10.0.0.nupkg.sha512",
+    "C:\\Users\\pipe\\.nuget\\packages\\aspnet.security.oauth.zalo\\10.0.0\\aspnet.security.oauth.zalo.10.0.0.nupkg.sha512",
     "C:\\Users\\pipe\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\pipe\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
     "C:\\Users\\pipe\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",

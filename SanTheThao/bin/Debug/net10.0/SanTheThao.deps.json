@@ -9,6 +9,7 @@
       "SanTheThao/1.0.0": {
         "dependencies": {
           "AspNet.Security.OAuth.GitHub": "10.0.0",
+          "AspNet.Security.OAuth.Zalo": "10.0.0",
           "BCrypt.Net-Next": "4.2.0",
           "Microsoft.AspNetCore.Authentication.Google": "10.0.9",
           "Microsoft.EntityFrameworkCore.Design": "10.0.8",
@@ -22,6 +23,14 @@
       "AspNet.Security.OAuth.GitHub/10.0.0": {
         "runtime": {
           "lib/net10.0/AspNet.Security.OAuth.GitHub.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.56155"
+          }
+        }
+      },
+      "AspNet.Security.OAuth.Zalo/10.0.0": {
+        "runtime": {
+          "lib/net10.0/AspNet.Security.OAuth.Zalo.dll": {
             "assemblyVersion": "10.0.0.0",
             "fileVersion": "10.0.25.56155"
           }
@@ -842,6 +851,13 @@
       "sha512": "sha512-PbOrAso/hlCS2p3YHHq94C5W/6851xyMT8ZEkAc3eGQNlsu3Siwu/D98nzCKyOKmB+KNu9MirWpmO66PmEIexQ==",
       "path": "aspnet.security.oauth.github/10.0.0",
       "hashPath": "aspnet.security.oauth.github.10.0.0.nupkg.sha512"
+    },
+    "AspNet.Security.OAuth.Zalo/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nev6DRcnJOW0r5z+sK6y+ShB1cAD7OvK9KxmgxZx7PeG7F0PgTMMmVD06OZJNV+stNF2lLlLorXdw7rSyssRpg==",
+      "path": "aspnet.security.oauth.zalo/10.0.0",
+      "hashPath": "aspnet.security.oauth.zalo.10.0.0.nupkg.sha512"
     },
     "Azure.Core/1.47.1": {
       "type": "package",

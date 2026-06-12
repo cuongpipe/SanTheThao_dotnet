@@ -18,6 +18,22 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "AspNet.Security.OAuth.Zalo/10.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/AspNet.Security.OAuth.Zalo.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/AspNet.Security.OAuth.Zalo.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Azure.Core/1.47.1": {
         "type": "package",
         "dependencies": {
@@ -1171,6 +1187,21 @@
         "aspnet.security.oauth.github.nuspec",
         "lib/net10.0/AspNet.Security.OAuth.GitHub.dll",
         "lib/net10.0/AspNet.Security.OAuth.GitHub.xml"
+      ]
+    },
+    "AspNet.Security.OAuth.Zalo/10.0.0": {
+      "sha512": "nev6DRcnJOW0r5z+sK6y+ShB1cAD7OvK9KxmgxZx7PeG7F0PgTMMmVD06OZJNV+stNF2lLlLorXdw7rSyssRpg==",
+      "type": "package",
+      "path": "aspnet.security.oauth.zalo/10.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "README.md",
+        "aspnet.security.oauth.zalo.10.0.0.nupkg.sha512",
+        "aspnet.security.oauth.zalo.nuspec",
+        "lib/net10.0/AspNet.Security.OAuth.Zalo.dll",
+        "lib/net10.0/AspNet.Security.OAuth.Zalo.xml"
       ]
     },
     "Azure.Core/1.47.1": {
@@ -3363,6 +3394,7 @@
   "projectFileDependencyGroups": {
     "net10.0": [
       "AspNet.Security.OAuth.GitHub >= 10.0.0",
+      "AspNet.Security.OAuth.Zalo >= 10.0.0",
       "BCrypt.Net-Next >= 4.2.0",
       "Microsoft.AspNetCore.Authentication.Google >= 10.0.9",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.8",
@@ -3417,6 +3449,10 @@
         "targetAlias": "net10.0",
         "dependencies": {
           "AspNet.Security.OAuth.GitHub": {
+            "target": "Package",
+            "version": "[10.0.0, )"
+          },
+          "AspNet.Security.OAuth.Zalo": {
             "target": "Package",
             "version": "[10.0.0, )"
           },

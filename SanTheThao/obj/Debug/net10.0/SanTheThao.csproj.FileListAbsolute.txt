@@ -688,3 +688,4 @@ D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.pdb
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.genruntimeconfig.cache
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\ref\SanTheThao.dll
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.sourcelink.json
+D:\dotnet-cuoiky\SanTheThao\bin\Debug\net10.0\AspNet.Security.OAuth.Zalo.dll
