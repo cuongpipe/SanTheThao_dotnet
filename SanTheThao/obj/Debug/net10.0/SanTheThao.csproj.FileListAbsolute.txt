@@ -674,8 +674,6 @@ D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\oatj1qo80o-{0}-jjsuc0pu
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\zkg33mf59n-{0}-9vr69e8ynj-9vr69e8ynj.gz
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\rii59ols64-{0}-87fc7y1x7t-87fc7y1x7t.gz
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\lp1xx77gdp-{0}-mlv21k5csn-mlv21k5csn.gz
-D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\aa4v8ixfpn-{0}-cun8f7q3nu-cun8f7q3nu.gz
-D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\wnl44jibjp-{0}-cun8f7q3nu-cun8f7q3nu.gz
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\staticwebassets.build.json
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\staticwebassets.build.json.cache
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\staticwebassets.development.json
@@ -689,3 +687,5 @@ D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.genruntimeconfig.cache
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\ref\SanTheThao.dll
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.sourcelink.json
 D:\dotnet-cuoiky\SanTheThao\bin\Debug\net10.0\AspNet.Security.OAuth.Zalo.dll
+D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\aa4v8ixfpn-{0}-g826i74tqu-g826i74tqu.gz
+D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\wnl44jibjp-{0}-g826i74tqu-g826i74tqu.gz

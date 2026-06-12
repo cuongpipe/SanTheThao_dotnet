@@ -8,105 +8,14 @@
     <link rel="icon" type="image/x-icon" href="~/images/logo/santhethao.logo.png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <style>
-        /* CSS bổ sung riêng cho khung Popup Chatbot */
-        .chatbot-popup {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 360px;
-            height: 480px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            border: 1px solid #e2e8f0;
-            z-index: 9999;
-            display: none; /* Mặc định ẩn */
-            flex-direction: column;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        .chatbot-header {
-            background-color: #1e293b;
-            color: #ffffff;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .chatbot-body {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            background-color: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .chat-msg {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 0.875rem;
-            line-height: 1.4;
-        }
-
-        .chat-msg.bot {
-            background-color: #e2e8f0;
-            color: #1e293b;
-            align-self: flex-start;
-            border-top-left-radius: 2px;
-        }
-
-        .chat-msg.user {
-            background-color: #22c55e;
-            color: #ffffff;
-            align-self: flex-end;
-            border-top-right-radius: 2px;
-        }
-
-        .chatbot-footer {
-            padding: 12px;
-            background-color: #ffffff;
-            border-t: 1px solid #f1f5f9;
-            display: flex;
-            gap: 8px;
-        }
-
-        .chatbot-footer input {
-            flex: 1;
-            border: 1px solid #cbd5e1;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            outline: none;
-        }
-
-        .chatbot-footer input:focus {
-            border-color: #22c55e;
-        }
-
-        .chatbot-footer button {
-            background-color: #22c55e;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .chatbot-footer button:hover {
-            background-color: #16a34a;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+    <style>
 
+    </style>
 <body>
+
+    <!=============== header ================-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" asp-page="/Index">
@@ -187,10 +96,18 @@
         </div>
     </nav>
 
+
+
+
+
     <div class="container py-4">
         @RenderBody()
     </div>
 
+
+
+
+<!=============== chatbot popup ================-->
     <div id="chatbotPopup" class="chatbot-popup">
         <div class="chatbot-header">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -215,19 +132,32 @@
         </div>
     </div>
 
+
+<!=============== foooter ================-->
     <footer class="site-footer">
         <div class="container position-relative">
             <div class="row g-4 mb-2">
                 <div class="col-lg-4">
-                    <div class="footer-brand mb-2">🏟️ Sân <span>Thể Thao</span></div>
+                    <div class="footer-brand mb-2">
+                        <img src="~/images/logo/santhethao.logo.png" style="width:35px; height:35px; border-radius:8px" alt="Sân Thể Thao">
+                        Sân <span>Thể Thao</span>
+                    </div>
                     <p style="color:rgba(255,255,255,0.45);font-size:0.875rem;line-height:1.8;max-width:280px">
                         Hệ thống đặt sân thể thao trực tuyến — nhanh chóng, tiện lợi và uy tín.
                     </p>
                     <div class="d-flex gap-2 mt-3">
-                        <a href="#" class="social-btn" title="Facebook">📘</a>
-                        <a href="#" class="social-btn" title="Instagram">📸</a>
-                        <a href="#" class="social-btn" title="TikTok">🎵</a>
-                        <a href="#" class="social-btn" title="YouTube">▶️</a>
+                        <a href="https://www.facebook.com/people/S%C3%A2n-Th%E1%BB%83-Thao/61590934222984/" class="social-btn text-decoration-none" title="Facebook">
+                            <i class="bi bi-facebook" style="color: #1877F2; font-size: 1.3rem;"></i>
+                        </a>
+                        <a href="https://www.instagram.com/santhethao/" class="social-btn text-decoration-none" title="Instagram">
+                            <i class="bi bi-instagram" style="color: #E4405F; font-size: 1.3rem;"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@santhethao" class="social-btn text-decoration-none" title="TikTok">
+                            <i class="bi bi-tiktok" style="color: #000000; font-size: 1.3rem;"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@santhethao" class="social-btn text-decoration-none" title="YouTube">
+                            <i class="bi bi-youtube" style="color: #FF0000; font-size: 1.3rem;"></i>
+                        </a>
                     </div>
                 </div>
 
@@ -258,7 +188,7 @@
 
                 <div class="col-lg-4">
                     <div class="footer-heading">Liên hệ</div>
-                    <div class="footer-contact-item">📍 <span>123 Nguyễn Văn Linh, TP.HCM</span></div>
+                    <div class="footer-contact-item">📍 <span>Dong Anh, Ha Noi, Vietnam</span></div>
                     <div class="footer-contact-item">📞 <a href="tel:0901234567" class="footer-link">0901 234 567</a></div>
                     <div class="footer-contact-item">✉️ <a href="mailto:contact@santhethao.com" class="footer-link">contact@santhethao.com</a></div>
                     <div class="footer-contact-item">🕐 <span>Mở cửa 06:00 – 22:00 hàng ngày</span></div>
@@ -304,6 +234,8 @@
                 nav.style.background = 'rgba(15,23,42,0.92)';
             }
         });
+
+
 
         // =========================================================================
         // LOGIC FETCH API ĐIỀU KHIỂN KHUNG CHAT POPUP (GROQ / LLAMA 3.1)
@@ -396,6 +328,7 @@
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 
 </html>
