@@ -612,7 +612,6 @@ D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\scopedcss\bundle\SanTheThao.styles.css
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\scopedcss\projectbundle\SanTheThao.bundle.scp.css
-D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\fqipa5y5li-{0}-ir4xgeq4su-ir4xgeq4su.gz
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\69x7ax46pi-{0}-61n19gt1b8-61n19gt1b8.gz
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\pdec3t7xxc-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\lz1wjhlj8q-{0}-t1cqhe9u97-t1cqhe9u97.gz
@@ -687,5 +686,6 @@ D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.genruntimeconfig.cache
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\ref\SanTheThao.dll
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.sourcelink.json
 D:\dotnet-cuoiky\SanTheThao\bin\Debug\net10.0\AspNet.Security.OAuth.Zalo.dll
-D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\aa4v8ixfpn-{0}-g826i74tqu-g826i74tqu.gz
-D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\wnl44jibjp-{0}-g826i74tqu-g826i74tqu.gz
+D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\fqipa5y5li-{0}-9ed9rx8uza-9ed9rx8uza.gz
+D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\aa4v8ixfpn-{0}-ub81iekpmp-ub81iekpmp.gz
+D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\wnl44jibjp-{0}-ub81iekpmp-ub81iekpmp.gz
