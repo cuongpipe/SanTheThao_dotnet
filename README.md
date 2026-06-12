@@ -17,5 +17,8 @@ dotnet add package AspNet.Security.OAuth.GitHub
 # thanh toán vứi momo API
 
 
+# cài thư viện zalo để đăng nhập với zalo 
+dotnet add package AspNet.Security.OAuth.Zalo
+
 
 
