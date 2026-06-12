@@ -1,0 +1,124 @@
+@page
+@model SanTheThao.Pages.Admin.CourtsModel
+@{
+    ViewData["Title"] = "Quản lý sân";
+    Layout = "_Layout";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h4 class="fw-bold mb-0">🏟️ Quản lý sân</h4>
+    <a asp-page="/Admin/Dashboard" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success py-2">@TempData["Message"]</div>
+}
+
+<!-- Form thêm sân -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <h6 class="fw-bold mb-3">➕ Thêm sân mới</h6>
+        <form method="post" asp-page-handler="Add" enctype="multipart/form-data">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Môn thể thao</label>
+                    <select asp-for="SportTypeId" class="form-select form-select-sm">
+                        @foreach (var s in Model.SportTypes)
+                        {
+                            <option value="@s.Id">@s.Icon @s.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-semibold">Tên sân</label>
+                    <input asp-for="CourtName" class="form-control form-control-sm" placeholder="VD: Sân A3" required />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-semibold">Giá / giờ (VNĐ)</label>
+                    <input asp-for="PricePerHour" type="number" class="form-control form-control-sm"
+                           placeholder="200000" required />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-semibold">Mô tả</label>
+                    <input asp-for="Description" class="form-control form-control-sm" placeholder="Tuỳ chọn" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-semibold">Ảnh sân</label>
+                    <input asp-for="ImageFile" type="file" accept="image/*" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Thêm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Danh sách sân -->
+<div class="row g-3">
+    @foreach (var court in Model.Courts)
+    {
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 @(!court.IsActive ? "opacity-50" : "")">
+                <!-- Ảnh -->
+                <div style="height:160px;overflow:hidden;border-radius:12px 12px 0 0;background:#f3f4f6;position:relative">
+                    @if (!string.IsNullOrEmpty(court.ImageUrl))
+                    {
+                        <img src="@court.ImageUrl" style="width:100%;height:100%;object-fit:cover" />
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center justify-content-center h-100"
+                             style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe)">
+                            <span style="font-size:3.5rem">@court.SportType.Icon</span>
+                        </div>
+                    }
+                    <div style="position:absolute;top:8px;right:8px">
+                        @if (court.IsActive)
+                        {
+                            <span class="badge bg-success">Đang mở</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Đã ẩn</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-body pb-2">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold mb-0">@court.Name</h6>
+                            <small class="text-muted">@court.SportType.Icon @court.SportType.Name</small>
+                        </div>
+                        <span class="text-success fw-bold small">@court.PricePerHour.ToString("N0")đ/h</span>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <div class="d-flex gap-2">
+                        <!-- Upload ảnh -->
+                        <form method="post" asp-page-handler="UploadImage" enctype="multipart/form-data"
+                              class="flex-grow-1">
+                            <input type="hidden" name="id" value="@court.Id" />
+                            <div class="input-group input-group-sm">
+                                <input type="file" name="ImageFile" accept="image/*" class="form-control form-control-sm"
+                                       onchange="this.form.submit()" />
+                            </div>
+                        </form>
+                        <!-- Ẩn/Mở -->
+                        <form method="post" asp-page-handler="Toggle">
+                            <input type="hidden" name="id" value="@court.Id" />
+                            @{
+                                var cls = court.IsActive ? "btn-outline-danger" : "btn-outline-success";
+                                var txt = court.IsActive ? "Ẩn" : "Mở";
+                            }
+                            <button type="submit" class="btn btn-sm @cls">@txt</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

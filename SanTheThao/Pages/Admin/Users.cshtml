@@ -1,0 +1,93 @@
+@page
+@model SanTheThao.Pages.Admin.UsersModel
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+    Layout = "_Layout";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h4 class="fw-bold mb-0">👥 Quản lý tài khoản</h4>
+    <a asp-page="/Admin/Dashboard" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success py-2">@TempData["Success"]</div>
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">Họ tên</th>
+                        <th>Email</th>
+                        <th>Điện thoại</th>
+                        <th>Role</th>
+                        <th>Ngày tạo</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr class="@(!user.IsActive ? "opacity-50" : "")">
+                            <td class="ps-3 fw-semibold">@user.FullName</td>
+                            <td class="text-muted">@user.Email</td>
+                            <td>@user.PhoneNumber</td>
+                            <td>
+                                @if (user.Role == "Admin")
+                                {
+                                    <span class="badge bg-danger">Admin</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">User</span>
+                                }
+                            </td>
+                            <td class="text-muted">@user.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (user.IsActive)
+                                {
+                                    <span class="badge bg-success">Hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Đã khoá</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (user.Role != "Admin")
+                                {
+                                    <div class="d-flex gap-1 justify-content-center">
+                                        @{
+                                            var toggleClass = user.IsActive ? "btn-outline-danger" : "btn-outline-success";
+                                            var toggleText = user.IsActive ? "Khoá" : "Mở khoá";
+                                        }
+                                        <form method="post" asp-page-handler="Toggle" class="d-inline">
+                                            <input type="hidden" name="id" value="@user.Id" />
+                                            <button type="submit" class="btn btn-sm @toggleClass">
+                                                @toggleText
+                                            </button>
+                                        </form>
+                                        <form method="post" asp-page-handler="Delete" class="d-inline">
+                                            <input type="hidden" name="id" value="@user.Id" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                    onclick="return confirm('Xoá tài khoản này?')">🗑</button>
+                                        </form>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">—</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

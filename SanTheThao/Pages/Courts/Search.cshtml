@@ -1,0 +1,57 @@
+@page
+@model SanTheThao.Pages.Courts.SearchModel
+
+<h4 class="mb-3">🔍 Kết quả tìm kiếm</h4>
+
+<p>Từ khóa: <strong>@Model.Search</strong></p>
+
+@if (!Model.Courts.Any())
+{
+    <p class="text-muted">Không tìm thấy sân nào</p>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var court in Model.Courts)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm court-card">
+                    <!-- Ảnh sân -->
+                    <div style="height:180px;overflow:hidden;border-radius:12px 12px 0 0;background:#f3f4f6">
+                        @if (!string.IsNullOrEmpty(court.ImageUrl))
+                        {
+                            <img src="@court.ImageUrl" alt="@court.Name"
+                                 style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease" class="court-img" />
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center justify-content-center h-100"
+                                 style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe)">
+                                <span style="font-size:4rem">@court.SportType.Icon</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-primary small">@court.SportType.Name</span>
+                        </div>
+                        <h6 class="fw-bold mb-1">@court.Name</h6>
+                        @if (!string.IsNullOrEmpty(court.Description))
+                        {
+                            <p class="text-muted small mb-2">@court.Description</p>
+                        }
+                        <div class="fw-bold text-success">
+                            @court.PricePerHour.ToString("N0") VNĐ / giờ
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <a asp-page="/Courts/Detail" asp-route-id="@court.Id" class="btn btn-primary w-100 fw-semibold btn-sm">
+                            Xem lịch & Đặt sân
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

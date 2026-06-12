@@ -1,0 +1,195 @@
+@page "{id:int}"
+@model SanTheThao.Pages.Courts.DetailModel
+@{
+    ViewData["Title"] = Model.Court?.Name ?? "Chi tiết sân";
+    Layout = "_Layout";
+}
+
+@if (Model.Court == null)
+{
+    <div class="alert alert-warning">Không tìm thấy sân</div>
+    return;
+}
+
+<!-- Breadcrumb -->
+<nav class="mb-3">
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a asp-page="/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-page="/Courts/Index">Đặt sân</a></li>
+        <li class="breadcrumb-item active">@Model.Court.Name</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <!-- Cột trái: Thông tin sân -->
+    <div class="col-lg-4">
+
+        <!-- Ảnh sân -->
+        <div class="card border-0 shadow-sm mb-3" style="overflow:hidden;border-radius:12px!important">
+            <div style="height:220px;overflow:hidden;background:#f3f4f6">
+                @if (!string.IsNullOrEmpty(Model.Court.ImageUrl))
+                {
+                    <img src="@Model.Court.ImageUrl" alt="@Model.Court.Name"
+                         style="width:100%;height:100%;object-fit:cover" />
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center h-100"
+                         style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe)">
+                        <span style="font-size:5rem">@Model.Court.SportType.Icon</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Thông tin chi tiết -->
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <h5 class="fw-bold mb-1">@Model.Court.Name</h5>
+                    <span class="badge bg-primary">@Model.Court.SportType.Name</span>
+                </div>
+                <hr>
+                @if (!string.IsNullOrEmpty(Model.Court.Description))
+                {
+                    <p class="text-muted small">@Model.Court.Description</p>
+                }
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small">Giá / giờ</span>
+                    <span class="fw-bold text-success fs-5">@Model.Court.PricePerHour.ToString("N0") VNĐ</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted small">Giờ hoạt động</span>
+                    <span class="small fw-semibold">06:00 - 22:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chú thích -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h6 class="fw-semibold mb-3">Chú thích</h6>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <div style="width:28px;height:28px;background:#d1fae5;border-radius:6px;border:1px solid #6ee7b7">
+                    </div>
+                    <span class="small">Còn trống — có thể đặt</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <div style="width:28px;height:28px;background:#fee2e2;border-radius:6px;border:1px solid #fca5a5">
+                    </div>
+                    <span class="small">Đã được đặt</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cột phải: Lịch đặt sân -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+
+                <!-- Chọn ngày -->
+                <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
+                    <h6 class="fw-bold mb-0">📅 Chọn ngày:</h6>
+                    <form method="get" class="d-flex gap-2 align-items-center">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="date" name="selectedDate" value="@Model.SelectedDate.ToString("yyyy-MM-dd")"
+                               min="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control form-control-sm"
+                               style="width:160px" onchange="this.form.submit()" />
+                    </form>
+                    <span class="text-muted small">
+                        @Model.SelectedDate.ToString("dddd, dd/MM/yyyy")
+                    </span>
+                </div>
+
+                <!-- Lưới khung giờ -->
+                <div class="row g-2">
+                    @foreach (var slot in Model.TimeSlots)
+                    {
+                        var isBooked = Model.IsSlotBooked(slot);
+                        var endSlot = slot.AddHours(1);
+                        var label = $"{slot:HH:mm} - {endSlot:HH:mm}";
+
+                        if (isBooked)
+                        {
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="p-2 text-center rounded small fw-semibold"
+                                     style="background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;cursor:not-allowed">
+                                    @label<br />
+                                    <span style="font-size:0.7rem;font-weight:normal">Đã đặt</span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-6 col-md-4 col-lg-3">
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <a asp-page="/Booking/Create" asp-route-courtId="@Model.Court.Id"
+                                       asp-route-date="@Model.SelectedDate.ToString("yyyy-MM-dd")"
+                                       asp-route-start="@slot.ToString("HH:mm")" asp-route-end="@endSlot.ToString("HH:mm")"
+                                       class="d-block p-2 text-center rounded small fw-semibold text-decoration-none slot-free">
+                                        @label<br />
+                                        <span style="font-size:0.7rem;font-weight:normal">Đặt ngay</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-page="/Auth/Login"
+                                       class="d-block p-2 text-center rounded small fw-semibold text-decoration-none slot-free">
+                                        @label<br />
+                                        <span style="font-size:0.7rem;font-weight:normal">Đăng nhập để đặt</span>
+                                    </a>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5>Đánh giá</h5>
+<form method="post">
+    <input type="hidden" asp-for="NewReview.CourtId" value="@Model.Court.Id" />
+
+    <select asp-for="NewReview.Rating" class="form-control mb-2">
+        <option value="5">5 sao</option>
+        <option value="4">4 sao</option>
+        <option value="3">3 sao</option>
+        <option value="2">2 sao</option>
+        <option value="1">1 sao</option>
+    </select>
+
+    <input asp-for="NewReview.UserName" class="form-control mb-2" placeholder="Tên của bạn" />
+
+    <textarea asp-for="NewReview.Comment" class="form-control mb-2" placeholder="Nhận xét"></textarea>
+
+    <button class="btn btn-primary">Gửi</button>
+</form>
+<hr />
+
+@if (!Model.Reviews.Any())
+{
+    <p>Chưa có đánh giá</p>
+}
+else
+{
+    @foreach (var r in Model.Reviews)
+    {
+        <div class="border p-2 mb-2">
+            <b>@r.UserName</b>
+
+            <div>
+                @for (int i = 0; i < r.Rating; i++)
+                {
+                    <span>⭐</span>
+                }
+            </div>
+
+            <p>@r.Comment</p>
+        </div>
+    }
+}

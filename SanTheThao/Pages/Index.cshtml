@@ -1,0 +1,320 @@
+@page
+@model SanTheThao.Pages.IndexModel
+@{
+    ViewData["Title"] = "Trang chủ";
+    Layout = "_Layout";
+}
+
+<!-- HERO với video nền -->
+<div style="margin: -1.5rem -12px 0; border-radius: 0 0 32px 32px; overflow: hidden;">
+    <div class="hero-wrap">
+        <video class="hero-video" autoplay muted loop playsinline
+               poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&q=80">
+            <source src="/videos/thethao.mp4" type="video/mp4">
+        </video>
+
+        <!-- Overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- Floating shapes -->
+        <div class="hero-shape hero-shape-1"></div>
+        <div class="hero-shape hero-shape-2"></div>
+
+        <!-- Content -->
+        <div class="container hero-content py-5">
+            <div class="row align-items-center min-vh-75">
+                <div class="col-lg-7">
+                    <div class="hero-badge">
+                        <span class="pulse-dot"></span>
+                        Đang mở cửa — 06:00 đến 22:00
+                    </div>
+
+                    <h1 class="hero-title">
+                        Đặt sân<br>
+                        <span class="accent">thể thao</span><br>
+                        <span class="stroke">online</span>
+                    </h1>
+
+                    <p class="hero-sub">
+                        Hệ thống đặt sân thể thao hiện đại — nhanh chóng, tiện lợi.
+                        Bóng đá, cầu lông, bóng rổ, pickleball và nhiều hơn nữa.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a asp-page="/Courts/Index" class="btn btn-primary btn-lg px-5 fw-bold">
+                            Đặt sân ngay →
+                        </a>
+                        <a asp-page="/News/Index" class="btn btn-glass btn-lg px-4">
+                            Tin tức thể thao
+                        </a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div>
+                            <div class="hero-stat-num">@Model.TopCourts.Sum(x => x.BookingCount)+</div>
+                            <div class="hero-stat-label">Lượt đặt sân</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-num">@Model.SportTypes.Count</div>
+                            <div class="hero-stat-label">Môn thể thao</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-num">@Model.SportTypes.Sum(s => s.Courts.Count)+</div>
+                            <div class="hero-stat-label">Sân hoạt động</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating card bên phải -->
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div style="position:relative">
+                        <div
+                            style="background:rgba(255,255,255,0.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);border-radius:24px;padding:2rem;animation:float 5s ease-in-out infinite">
+                            <p class="text-white fw-bold mb-3 small"
+                               style="opacity:0.7;letter-spacing:0.05em;text-transform:uppercase">Môn thể thao</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var s in Model.SportTypes)
+                                {
+                                    <div
+                                        style="background:rgba(14,165,233,0.2);border:1px solid rgba(14,165,233,0.3);border-radius:12px;padding:0.75rem 1rem;display:flex;align-items:center;gap:0.5rem;color:white;font-weight:600;font-size:0.85rem">
+                                        <span style="font-size:1.4rem">@s.Icon</span>
+                                        @s.Name
+                                    </div>
+                                }
+                            </div>
+                            <div
+                                style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.1)">
+                                <p class="text-white small mb-2" style="opacity:0.6">Khung giờ phổ biến</p>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    @foreach (var t in new[] { "17:00", "18:00", "19:00", "20:00" })
+                                    {
+                                        <span
+                                        style="background:rgba(249,115,22,0.25);border:1px solid rgba(249,115,22,0.4);color:#fdba74;border-radius:8px;padding:0.3rem 0.7rem;font-size:0.8rem;font-weight:600">@t</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticker -->
+        <div class="hero-ticker">
+            <div class="ticker-track">
+                @foreach (var item in new[] { "⚽ Bóng đá", "🏸 Cầu lông", "🏀 Bóng rổ", "🏐 Bóng chuyền", "🎾 Pickleball", "📅 Đặt sân online 24/7", "✅ Xác nhận ngay", "🔥 Nhiều ưu đãi hấp dẫn" })
+                {
+                    <span class="ticker-item">@item</span>
+                }
+                @foreach (var item in new[] { "⚽ Bóng đá", "🏸 Cầu lông", "🏀 Bóng rổ", "🏐 Bóng chuyền", "🎾 Pickleball", "📅 Đặt sân online 24/7", "✅ Xác nhận ngay", "🔥 Nhiều ưu đãi hấp dẫn" })
+                {
+                    <span class="ticker-item">@item</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Chọn môn -->
+    <div class="py-5 reveal reveal-1">
+        <div class="text-center mb-4">
+            <div class="section-label">Khám phá</div>
+            <div class="section-title">Chọn môn thể thao</div>
+        </div>
+        <div class="row g-3 justify-content-center">
+            @foreach (var sport in Model.SportTypes)
+            {
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a asp-page="/Courts/Index" asp-route-sportTypeId="@sport.Id"
+                       class="card text-center text-decoration-none h-100 border-0 sport-card">
+                        <div class="card-body py-4">
+                            <div style="font-size:2.8rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15));transition:transform 0.3s var(--spring)"
+                                 class="sport-icon">@sport.Icon</div>
+                            <div class="fw-bold mt-2" style="font-family:'Outfit',sans-serif">@sport.Name</div>
+                            <div class="text-muted" style="font-size:0.75rem">@sport.Courts.Count sân</div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="glow-divider"></div>
+
+    <!-- Top 3 sân hot -->
+    <div class="pb-5 reveal reveal-2">
+        <div class="d-flex align-items-end justify-content-between mb-4">
+            <div>
+                <div class="section-label">🔥 Hot nhất</div>
+                <div class="section-title">Sân được đặt nhiều nhất</div>
+            </div>
+            <a asp-page="/Courts/Index" class="btn btn-outline-primary btn-sm fw-semibold">Xem tất cả →</a>
+        </div>
+        <div class="row g-4">
+            @foreach (var (court, count) in Model.TopCourts)
+            {
+                <div class="col-md-4">
+                    <div class="card border-0 court-card h-100">
+                        <div style="height:220px;overflow:hidden;position:relative;background:#f1f5f9">
+                            @if (!string.IsNullOrEmpty(court.ImageUrl))
+                            {
+                                <img src="@court.ImageUrl" alt="@court.Name" class="court-img"
+                                     style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s var(--ease)" />
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center h-100"
+                                     style="background:linear-gradient(135deg,#e0f2fe,#bae6fd)">
+                                    <span
+                                    style="font-size:5rem;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.1))">@court.SportType.Icon</span>
+                                </div>
+                            }
+                            <!-- Badge lượt đặt -->
+                            <div style="position:absolute;top:12px;left:12px">
+                                <span
+                                    style="background:rgba(15,23,42,0.75);backdrop-filter:blur(8px);color:white;border-radius:8px;padding:0.3rem 0.7rem;font-size:0.75rem;font-weight:700;border:1px solid rgba(255,255,255,0.1)">
+                                    🔥 @count lượt
+                                </span>
+                            </div>
+                            <div style="position:absolute;top:12px;right:12px">
+                                <span class="badge bg-primary">@court.SportType.Name</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-1" style="font-family:'Outfit',sans-serif">@court.Name</h6>
+                            @if (!string.IsNullOrEmpty(court.Description))
+                            {
+                                <p class="text-muted small mb-2">@court.Description</p>
+                            }
+                            <div class="fw-bold" style="color:var(--p1)">@court.PricePerHour.ToString("N0") VNĐ / giờ</div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3">
+                            <a asp-page="/Courts/Detail" asp-route-id="@court.Id" class="btn btn-primary w-100 fw-bold">Xem
+                                lịch & Đặt sân</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- How it works -->
+        <div class="pb-5 reveal reveal-3">
+            <div class="text-center mb-4">
+                <div class="section-label">Đơn giản</div>
+                <div class="section-title">Chỉ 3 bước đặt sân</div>
+            </div>
+            <div class="row g-4">
+                @foreach (var (step, icon, title, desc, color) in new[]{
+                ("01","🏟️","Chọn môn & sân","Duyệt qua các môn thể thao và chọn sân phù hợp với bạn","#0ea5e9"),
+                ("02","📅","Chọn ngày & giờ","Xem lịch trống theo thời gian thực, chọn khung giờ muốn đặt","#f97316"),
+                ("03","✅","Xác nhận & Chơi!","Xác nhận thông tin, nhận thông báo và đến sân đúng giờ","#10b981")
+            })
+                {
+                    <div class="col-md-4">
+                        <div class="card border-0 h-100 p-4" style="position:relative;overflow:hidden">
+                            <div
+                                style="position:absolute;top:-20px;right:-10px;font-family:'Outfit',sans-serif;font-size:5rem;font-weight:900;color:@color;opacity:0.06;line-height:1">
+                                @step</div>
+                                <div
+                                    style="width:56px;height:56px;border-radius:16px;background:@color;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:1.25rem;box-shadow:0 8px 24px @(color)44">
+                                    @icon</div>
+                                    <h6 class="fw-bold mb-2" style="font-family:'Outfit',sans-serif">@title</h6>
+                                    <p class="text-muted small mb-0">@desc</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="glow-divider"></div>
+
+                <!-- Tin tức -->
+                @if (Model.LatestNews.Any())
+                {
+                    <div class="pb-5 reveal reveal-4">
+                        <div class="d-flex align-items-end justify-content-between mb-4">
+                            <div>
+                                <div class="section-label">📰 Cập nhật</div>
+                                <div class="section-title">Tin tức thể thao</div>
+                            </div>
+                            <a asp-page="/News/Index" class="btn btn-outline-primary btn-sm fw-semibold">Xem tất cả →</a>
+                        </div>
+                        <div class="row g-4">
+                            @foreach (var post in Model.LatestNews)
+                            {
+                                <div class="col-md-4">
+                                    <div class="card h-100 border-0 news-card">
+                                        <div style="height:200px;overflow:hidden;background:#f1f5f9">
+                                            @if (!string.IsNullOrEmpty(post.ThumbnailUrl))
+                                            {
+                                                <img src="@post.ThumbnailUrl" alt="@post.Title" class="news-img"
+                                                     style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s var(--ease)" />
+                                            }
+                                            else
+                                            {
+                                                <div class="d-flex align-items-center justify-content-center h-100"
+                                                     style="background:linear-gradient(135deg,#fef3c7,#fed7aa)">
+                                                    <span style="font-size:4rem">📰</span>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="card-body d-flex flex-column">
+                                            <span class="badge bg-primary mb-2" style="width:fit-content">@post.Category</span>
+                                            <h6 class="fw-bold flex-grow-1" style="font-family:'Outfit',sans-serif">@post.Title</h6>
+                                            <p class="text-muted small mb-3">@post.Summary</p>
+                                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                                <span class="text-muted" style="font-size:0.75rem">📅
+                                                    @post.CreatedAt.ToString("dd/MM/yyyy")</span>
+                                                    <a asp-page="/News/Detail" asp-route-slug="@post.Slug"
+                                                       class="btn btn-outline-primary btn-sm">Đọc →</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!-- CTA Banner -->
+                    <div class="reveal reveal-5 mb-5">
+                        <div
+                            style="background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,#0c2340 100%);border-radius:var(--r-xl);padding:3.5rem;position:relative;overflow:hidden">
+                            <div
+                                style="position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(14,165,233,0.15),transparent 70%)">
+                            </div>
+                            <div
+                                style="position:absolute;bottom:-60px;left:20%;width:250px;height:250px;background:radial-gradient(circle,rgba(249,115,22,0.1),transparent 70%)">
+                            </div>
+                            <div class="row align-items-center position-relative">
+                                <div class="col-lg-7 text-white mb-3 mb-lg-0">
+                                    <div class="section-label" style="color:#7dd3fc">Bắt đầu ngay hôm nay</div>
+                                    <h3 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-0.03em">
+                                        Đăng ký miễn phí<br>Đặt sân trong 60 giây
+                                    </h3>
+                                </div>
+                                <div class="col-lg-5 d-flex gap-3 flex-wrap justify-content-lg-end">
+                                    <a asp-page="/Auth/Register" class="btn btn-primary btn-lg fw-bold px-4">Đăng ký ngay</a>
+                                    <a asp-page="/Courts/Index" class="btn btn-glass btn-lg px-4">Xem sân</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <style>
+                    .min-vh-75 {
+                        min-height: 75vh;
+                    }
+
+                    .sport-card:hover .sport-icon {
+                        transform: scale(1.15) rotate(-5deg) !important;
+                    }
+                </style>
+
+
+

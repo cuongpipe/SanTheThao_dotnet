@@ -1,0 +1,167 @@
+@page
+@model SanTheThao.Pages.Admin.DashboardModel
+@using SanTheThao.Models
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_Layout";
+}
+
+<h4 class="fw-bold mb-4">⚙️ Admin Dashboard</h4>
+
+<!-- Thống kê tổng quan -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center p-3">
+            <div style="font-size:2rem">🏟️</div>
+            <div class="fw-bold fs-4 mt-1">@Model.TotalCourts</div>
+            <div class="text-muted small">Sân hoạt động</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center p-3">
+            <div style="font-size:2rem">👥</div>
+            <div class="fw-bold fs-4 mt-1">@Model.TotalUsers</div>
+            <div class="text-muted small">Người dùng</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center p-3">
+            <div style="font-size:2rem">📋</div>
+            <div class="fw-bold fs-4 mt-1">@Model.TotalBookings</div>
+            <div class="text-muted small">Tổng đơn đặt</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center p-3">
+            <div style="font-size:2rem">⏳</div>
+            <div class="fw-bold fs-4 mt-1 text-warning">@Model.PendingBookings</div>
+            <div class="text-muted small">Chờ xác nhận</div>
+        </div>
+    </div>
+</div>
+
+<!-- Doanh thu -->
+<div class="card border-0 shadow-sm mb-4 p-3">
+    <div class="d-flex align-items-center gap-3">
+        <div style="font-size:2rem">💰</div>
+        <div>
+            <div class="text-muted small">Tổng doanh thu (đã xác nhận)</div>
+            <div class="fw-bold fs-4 text-success">@Model.TotalRevenue.ToString("N0") VNĐ</div>
+        </div>
+    </div>
+</div>
+
+<!-- Điều hướng Admin -->
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <a asp-page="/Admin/Bookings"
+           class="card border-0 shadow-sm text-decoration-none text-dark p-3 d-block admin-card">
+            <div class="d-flex align-items-center gap-3">
+                <span style="font-size:2rem">📋</span>
+                <div>
+                    <div class="fw-bold">Quản lý đơn đặt</div>
+                    <div class="text-muted small">Duyệt, hủy, xem chi tiết đơn</div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a asp-page="/Admin/Courts"
+           class="card border-0 shadow-sm text-decoration-none text-dark p-3 d-block admin-card">
+            <div class="d-flex align-items-center gap-3">
+                <span style="font-size:2rem">🏟️</span>
+                <div>
+                    <div class="fw-bold">Quản lý sân</div>
+                    <div class="text-muted small">Thêm, sửa, ẩn/hiện sân</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <a asp-page="/Admin/Users"
+           class="card border-0 shadow-sm text-decoration-none text-dark p-3 d-block admin-card">
+            <div class="d-flex align-items-center gap-3">
+                <span style="font-size:2rem">👥</span>
+                <div>
+                    <div class="fw-bold">Quản lý người dùng</div>
+                    <div class="text-muted small">Khoá/mở tài khoản, xem danh sách</div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a asp-page="/Admin/News" class="card border-0 shadow-sm text-decoration-none text-dark p-3 d-block admin-card">
+            <div class="d-flex align-items-center gap-3">
+                <span style="font-size:2rem">📰</span>
+                <div>
+                    <div class="fw-bold">Quản lý tin tức</div>
+                    <div class="text-muted small">Thêm, sửa, xóa bài viết</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<!-- Đơn đặt gần đây -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h6 class="fw-bold mb-3">Đơn đặt gần đây</h6>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle small">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Sân</th>
+                        <th>Ngày</th>
+                        <th>Giờ</th>
+                        <th>Tiền</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model.RecentBookings)
+                    {
+                        var badge = b.Status switch
+                        {
+                            BookingStatus.Pending => "warning text-dark",
+                            BookingStatus.Confirmed => "success",
+                            BookingStatus.Cancelled => "danger",
+                            _ => "secondary"
+                        };
+                        var statusText = b.Status switch
+                        {
+                            BookingStatus.Pending => "Chờ xác nhận",
+                            BookingStatus.Confirmed => "Đã xác nhận",
+                            BookingStatus.Cancelled => "Đã hủy",
+                            _ => ""
+                        };
+                        <tr>
+                            <td class="fw-semibold text-primary">#@b.Id.ToString("D6")</td>
+                            <td>@b.User.FullName</td>
+                            <td>@b.Court.SportType.Icon @b.Court.Name</td>
+                            <td>@b.BookingDate.ToString("dd/MM/yyyy")</td>
+                            <td>@b.StartTime.ToString("HH:mm") - @b.EndTime.ToString("HH:mm")</td>
+                            <td class="text-success fw-semibold">@b.TotalPrice.ToString("N0")</td>
+                            <td><span class="badge bg-@badge">@statusText</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <a asp-page="/Admin/Bookings" class="btn btn-outline-primary btn-sm">Xem tất cả →</a>
+    </div>
+</div>
+
+<style>
+    .admin-card {
+        transition: transform .15s, box-shadow .15s;
+    }
+
+    .admin-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+    }
+</style>

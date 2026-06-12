@@ -1,0 +1,80 @@
+@page "/api/chatbot"
+@model SanTheThao.Pages.api.chatbotModel
+@{
+    ViewData["Title"] = "Chat Bot";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-3 text-primary"><i class="bi bi-robot"></i> Chat Bot với Gemini AI</h2>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div id="chatBox" style="height:400px; overflow-y:auto; border:1px solid #dee2e6; padding:15px; margin-bottom:15px; background-color: #f8f9fa; border-radius: 8px;">
+                        <div class="text-secondary mb-2"><i>Bot: Chào bạn! Mình là trợ lý AI. Mình có thể giúp gì cho bạn hôm nay?</i></div>
+                    </div>
+                    
+                    <form id="chatForm">
+                        <div class="input-group">
+                            <input type="text" id="userMessage" class="form-control" placeholder="Nhập tin nhắn tại đây..." required autocomplete="off" />
+                            <button type="submit" id="btnSend" class="btn btn-primary">Gửi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('chatForm').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Chặn hành vi tải lại trang mặc định của Form
+
+        const inputElement = document.getElementById('userMessage');
+        const chatBox = document.getElementById('chatBox');
+        const btnSend = document.getElementById('btnSend');
+        const message = inputElement.value.trim();
+
+        if (!message) return;
+
+        // 1. Hiển thị ngay tin nhắn của Người dùng lên màn hình
+        chatBox.innerHTML += `<div class="text-end mb-3"><strong>Bạn:</strong> <span class="bg-primary text-white d-inline-block p-2 rounded" style="max-width: 75%; text-align: left;">${message}</span></div>`;
+        inputElement.value = ''; // Xóa trống ô nhập
+        chatBox.scrollTop = chatBox.scrollHeight; // Cuộn khung chat xuống cuối
+
+        // Khóa các nút bấm để tránh người dùng spam khi AI đang xử lý
+        btnSend.disabled = true;
+        inputElement.disabled = true;
+
+        try {
+            // 2. Bắn Fetch API chạy ngầm lên Backend chính trang này
+            const response = await fetch('/api/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                
+                // Phòng hờ .NET tự động viết hoa chữ cái đầu (Reply thay vì reply)
+                const botText = data.reply || data.Reply || "Không nhận được nội dung từ phản hồi.";
+                
+                // 3. Hiển thị tin nhắn trả về của Gemini AI
+                chatBox.innerHTML += `<div class="text-start mb-3"><strong>Bot:</strong> <span class="bg-white d-inline-block p-2 rounded text-dark border" style="max-width: 75%; white-space: pre-line;">${botText}</span></div>`;
+            } else {
+                chatBox.innerHTML += `<div class="text-danger mb-3"><strong>Hệ thống:</strong> Không thể kết nối với AI (Mã lỗi: ${response.status}).</div>`;
+            }
+        } catch (error) {
+            chatBox.innerHTML += `<div class="text-danger mb-3"><strong>Hệ thống:</strong> Lỗi kết nối mạng. Vui lòng kiểm tra lại.</div>`;
+        } finally {
+            // Mở khóa lại form để tiếp tục chat câu tiếp theo
+            btnSend.disabled = false;
+            inputElement.disabled = false;
+            inputElement.focus();
+            chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
+        }
+    });
+</script>

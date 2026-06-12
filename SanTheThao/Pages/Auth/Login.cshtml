@@ -1,0 +1,103 @@
+@page
+@model SanTheThao.Pages.Auth.LoginModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "_Layout";
+}
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background:#f8f9fa">
+    <div class="card shadow-sm" style="width:100%;max-width:420px;border-radius:12px">
+        <div class="card-body p-4">
+
+            <div class="text-center mb-4">
+                <div style="font-size:2.5rem"><img src="~/images/logo/santhethao.logo.png"  style="width:20%;max-width:420px;border-radius:12px" ></div>
+                <h4 class="fw-bold mt-2">Đăng nhập</h4>
+                <p class="text-muted small">Hệ thống đặt sân thể thao</p>
+            </div>
+
+            @if (Model.ErrorMessage != null)
+            {
+                <div class="alert alert-danger py-2 small">@Model.ErrorMessage</div>
+            }
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success py-2 small">@TempData["Success"]</div>
+            }
+
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label fw-semibold">Email</label>
+                    <input asp-for="Input.Email" class="form-control" placeholder="example@email.com" />
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label fw-semibold">Mật khẩu</label>
+                    <div class="input-group">
+                        <input asp-for="Input.Password" type="password" class="form-control" placeholder="••••••••"
+                               id="passwordInput" />
+
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input asp-for="Input.RememberMe" class="form-check-input" />
+                    <label asp-for="Input.RememberMe" class="form-check-label small">Ghi nhớ đăng nhập</label>
+                                </div>
+
+                <button type="submit" class="btn btn-primary w-100 fw-semibold">Đăng nhập</button>
+            </form>
+
+            <!-- đăng nhập bên thứ 3 -->
+            <div class="text-center mt-3 d-flex justify-content-center gap-2">
+                
+                @if (!User.Identity.IsAuthenticated)
+                    {
+                        <form method="post" asp-page-handler="GoogleLogin">
+                            <button type="submit" class="btn btn-outline-secondary d-flex align-items-center gap-2 font-weight-bold shadow-sm">
+                                <img src="~/images/logo/google-logo.png" alt="Google" style="width: 20px; height: 20px;"> 
+                                Google
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            Bạn đã đăng nhập thành công với tên: <strong>@User.Identity.Name</strong>
+                        </div>
+                        <form method="post" asp-page-handler="Logout">
+                            <button type="submit" class="btn btn-secondary">Đăng xuất</button>
+                        </form>
+                    }
+                
+            
+                <form method="post" asp-page-handler="Challenge">
+                    <button class="btn btn-outline-secondary d-flex align-items-center gap-2 font-weight-bold shadow-sm">
+                        <img src="~/images/logo/github-logo.png" alt="GitHub" style="width: 20px; height: 20px;">
+                        GitHub
+                    </button>
+                </form>
+                
+                <form method="post" asp-page-handler="Challenge" asp-route-provider="Facebook">
+                    <button class="btn btn-outline-secondary d-flex align-items-center gap-2 font-weight-bold shadow-sm">
+                        <img src="~/images/logo/Facebook-logo.png" alt="Facebook" style="width: 20px; height: 20px;">
+                        Facebook
+                    </button>
+                </form>
+            </div>
+
+
+            <hr class="my-3">
+            <p class="text-center small mb-0">
+                Chưa có tài khoản?
+                <a asp-page="/Auth/Register" class="fw-semibold text-decoration-none">Đăng ký ngay</a>
+            </p>
+
+        </div>
+    </div>
+</div>
+

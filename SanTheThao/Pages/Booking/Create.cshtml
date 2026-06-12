@@ -1,0 +1,107 @@
+@page
+@model SanTheThao.Pages.Booking.CreateModel
+@{
+    ViewData["Title"] = "Xác nhận đặt sân";
+    Layout = "_Layout";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+
+        <h4 class="fw-bold mb-4">🗓️ Xác nhận đặt sân</h4>
+
+        @if (Model.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <div class="card border-0 shadow-sm mb-4" style="overflow:hidden;border-radius:12px!important">
+            <div style="height:180px;overflow:hidden;background:#f3f4f6">
+                @if (!string.IsNullOrEmpty(Model.Court?.ImageUrl))
+                {
+                    <img src="@Model.Court.ImageUrl" alt="@Model.Court.Name"
+                         style="width:100%;height:100%;object-fit:cover" />
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center h-100"
+                         style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe)">
+                        <span style="font-size:4rem">@Model.Court?.SportType.Icon</span>
+                    </div>
+                }
+            </div>
+
+            <div class="card-body">
+                <h6 class="fw-bold text-muted text-uppercase small mb-3">Thông tin đặt sân</h6>
+
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Sân</span>
+                    <span class="fw-semibold">@Model.Court?.SportType.Icon @Model.Court?.Name</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Môn thể thao</span>
+                    <span class="fw-semibold">@Model.Court?.SportType.Name</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Ngày</span>
+                    <span class="fw-semibold">@DateOnly.Parse(Model.Date).ToString("dd/MM/yyyy")</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Khung giờ</span>
+                    <span class="fw-semibold">@Model.Start - @Model.End</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Giá / giờ</span>
+                    <span class="fw-semibold">@Model.Court?.PricePerHour.ToString("N0") VNĐ</span>
+                </div>
+                <div class="d-flex justify-content-between py-2">
+                    <span class="fw-bold">Tổng tiền</span>
+                    <span class="fw-bold text-success fs-5">@Model.TotalPrice.ToString("N0") VNĐ</span>
+                </div>
+            </div>
+        </div>
+
+        <form method="post">
+            <input type="hidden" name="CourtId" value="@Model.CourtId" />
+            <input type="hidden" name="Date" value="@Model.Date" />
+            <input type="hidden" name="Start" value="@Model.Start" />
+            <input type="hidden" name="End" value="@Model.End" />
+
+            <div class="card border-0 shadow-sm mb-4" style="border-radius:12px!important">
+                <div class="card-body">
+                    <h6 class="fw-bold text-muted text-uppercase small mb-3">💵 Phương thức thanh toán</h6>
+                    
+                    <div class="form-check p-3 mb-2 rounded border border-light bg-light" style="cursor: pointer;">
+                        <input class="form-check-input ms-0 me-2" type="radio" name="PaymentMethod" id="payCash" value="Cash" checked>
+                        <label class="form-check-label fw-semibold text-dark" style="cursor: pointer;" for="payCash">
+                            💵 Thanh toán tiền mặt tại quầy sân
+                        </label>
+                    </div>
+                    
+                    <div class="form-check p-3 rounded border border-light" style="background-color: #fff0f6; border-color: #ffadd2 !important; cursor: pointer;">
+                        <input class="form-check-input ms-0 me-2" type="radio" name="PaymentMethod" id="payMomo" value="Momo">
+                        <label class="form-check-label fw-semibold" style="color: #d11a7a; cursor: pointer;" for="payMomo">
+                            💖 Thanh toán qua ví điện tử MoMo (Quét mã QR)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Ghi chú (tuỳ chọn)</label>
+                <textarea name="Note" class="form-control" rows="3"
+                          placeholder="Ví dụ: cần mượn lưới, đặt thêm bóng..."></textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg fw-semibold">
+                    ✅ Xác nhận đặt sân
+                </button>
+                <a asp-page="/Courts/Detail" asp-route-id="@Model.CourtId" asp-route-selectedDate="@Model.Date"
+                   class="btn btn-outline-secondary">
+                    ← Quay lại
+                </a>
+            </div>
+        </form>
+
+    </div>
+</div>

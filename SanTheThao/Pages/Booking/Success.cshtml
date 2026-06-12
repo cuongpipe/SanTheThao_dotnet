@@ -1,0 +1,80 @@
+@page
+@model SanTheThao.Pages.Booking.SuccessModel
+@using SanTheThao.Models
+@{
+    ViewData["Title"] = "Đặt sân thành công";
+    Layout = "_Layout";
+}
+<div class="row justify-content-center">
+    <div class="col-lg-6 text-center">
+
+        @if (ViewData["PayErrorMessage"] != null)
+        {
+            <div class="alert alert-danger text-center shadow-sm mb-4" style="border-radius: 8px;">
+                ⚠️ @ViewData["PayErrorMessage"]
+            </div>
+        }
+        else
+        {
+            <div class="mb-4 mt-3">
+                <div style="font-size:5rem">🎉</div>
+                <h3 class="fw-bold text-success mt-2">Đặt sân thành công!</h3>
+                <p class="text-muted">Đơn đặt sân của bạn đã được ghi nhận</p>
+            </div>
+        }
+
+        @if (Model.Booking != null)
+        {
+            <div class="card border-0 shadow-sm mb-4 text-start">
+                <div class="card-body">
+                    <h6 class="fw-bold text-muted text-uppercase small mb-3">Chi tiết đơn đặt</h6>
+
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted">Mã đơn</span>
+                        <span class="fw-bold text-primary">#@Model.Booking.Id.ToString("D6")</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted">Sân</span>
+                        <span class="fw-semibold">
+                            @Model.Booking.Court.SportType.Icon @Model.Booking.Court.Name
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted">Ngày</span>
+                        <span class="fw-semibold">
+                            @Model.Booking.BookingDate.ToString("dd/MM/yyyy")
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted">Khung giờ</span>
+                        <span class="fw-semibold">
+                            @Model.Booking.StartTime.ToString("HH:mm") - @Model.Booking.EndTime.ToString("HH:mm")
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted">Trạng thái</span>
+                        <span class="badge @(Model.Booking.Status == BookingStatus.Confirmed ? "bg-success" : "bg-warning text-dark")">
+                            @(Model.Booking.Status == BookingStatus.Confirmed ? "Đã xác nhận" : "Chờ xác nhận")
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2">
+                        <span class="fw-bold">Tổng tiền</span>
+                        <span class="fw-bold text-success fs-5">
+                            @Model.Booking.TotalPrice.ToString("N0") VNĐ
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="d-grid gap-2">
+            <a asp-page="/Booking/MyBookings" class="btn btn-primary fw-semibold">
+                📋 Xem lịch sử đặt sân
+            </a>
+            <a asp-page="/Courts/Index" class="btn btn-outline-secondary">
+                🏟️ Đặt sân khác
+            </a>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,109 @@
+@page
+@model SanTheThao.Pages.Admin.BookingsModel
+@using SanTheThao.Models
+@{
+    ViewData["Title"] = "Quản lý đơn đặt";
+    Layout = "_Layout";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h4 class="fw-bold mb-0">📋 Quản lý đơn đặt</h4>
+    <a asp-page="/Admin/Dashboard" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success py-2">@TempData["Message"]</div>
+}
+
+<!-- Filter -->
+<div class="d-flex gap-2 mb-3">
+    <a asp-page="/Admin/Bookings"
+       class="btn btn-sm @(Model.StatusFilter == null ? "btn-primary" : "btn-outline-secondary")">
+        Tất cả
+    </a>
+    <a asp-page="/Admin/Bookings" asp-route-statusFilter="Pending"
+       class="btn btn-sm @(Model.StatusFilter == "Pending" ? "btn-warning" : "btn-outline-secondary")">
+        ⏳ Chờ xác nhận
+    </a>
+    <a asp-page="/Admin/Bookings" asp-route-statusFilter="Confirmed"
+       class="btn btn-sm @(Model.StatusFilter == "Confirmed" ? "btn-success" : "btn-outline-secondary")">
+        ✅ Đã xác nhận
+    </a>
+    <a asp-page="/Admin/Bookings" asp-route-statusFilter="Cancelled"
+       class="btn btn-sm @(Model.StatusFilter == "Cancelled" ? "btn-danger" : "btn-outline-secondary")">
+        ❌ Đã hủy
+    </a>
+</div>
+
+<!-- Bảng đơn đặt -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Sân</th>
+                        <th>Ngày</th>
+                        <th>Giờ</th>
+                        <th>Tiền</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Bookings.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">Không có đơn nào</td>
+                        </tr>
+                    }
+                    @foreach (var b in Model.Bookings)
+                    {
+                        var badge = b.Status switch
+                        {
+                            BookingStatus.Pending   => "warning text-dark",
+                            BookingStatus.Confirmed => "success",
+                            BookingStatus.Cancelled => "danger",
+                            _ => "secondary"
+                        };
+                        var statusText = b.Status switch
+                        {
+                            BookingStatus.Pending   => "Chờ xác nhận",
+                            BookingStatus.Confirmed => "Đã xác nhận",
+                            BookingStatus.Cancelled => "Đã hủy",
+                            _ => ""
+                        };
+                        <tr class="@(b.Status == BookingStatus.Cancelled ? "opacity-50" : "")">
+                            <td class="ps-3 fw-semibold text-primary">#@b.Id.ToString("D6")</td>
+                            <td>
+                                <div class="fw-semibold">@b.User.FullName</div>
+                                <div class="text-muted" style="font-size:0.75rem">@b.User.PhoneNumber</div>
+                            </td>
+                            <td>@b.Court.SportType.Icon @b.Court.Name</td>
+                            <td>@b.BookingDate.ToString("dd/MM/yyyy")</td>
+                            <td>@b.StartTime.ToString("HH:mm") - @b.EndTime.ToString("HH:mm")</td>
+                            <td class="text-success fw-semibold">@b.TotalPrice.ToString("N0")</td>
+                            <td><span class="badge bg-@badge">@statusText</span></td>
+                            <td class="text-center">
+                                @if (b.Status == BookingStatus.Pending)
+                                {
+                                    <form method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@b.Id" />
+                                        <button asp-page-handler="Confirm"
+                                                class="btn btn-success btn-sm me-1">✅</button>
+                                        <button asp-page-handler="Cancel"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Hủy đơn này?')">❌</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

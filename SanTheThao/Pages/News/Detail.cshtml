@@ -1,0 +1,167 @@
+@page "{slug}"
+@model SanTheThao.Pages.News.DetailModel
+@{
+    ViewData["Title"] = Model.Post?.Title ?? "Tin tức";
+    Layout = "_Layout";
+}
+
+@if (Model.Post == null)
+{
+    <div class="alert alert-warning">Bài viết không tồn tại</div>
+    return;
+}
+
+<div class="row g-4">
+    <!-- Bài viết chính -->
+    <div class="col-lg-8">
+
+        <!-- Breadcrumb -->
+        <nav class="mb-3">
+            <ol class="breadcrumb small">
+                <li class="breadcrumb-item"><a asp-page="/Index">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a asp-page="/News/Index">Tin tức</a></li>
+                <li class="breadcrumb-item active">@Model.Post.Title</li>
+            </ol>
+        </nav>
+
+        <!-- Ảnh thumbnail -->
+        <div class="card border-0 shadow-sm mb-4" style="overflow:hidden;border-radius:12px!important">
+            <div style="height:300px;overflow:hidden;background:#f3f4f6">
+                @if (!string.IsNullOrEmpty(Model.Post.ThumbnailUrl))
+                {
+                    <img src="@Model.Post.ThumbnailUrl" alt="@Model.Post.Title"
+                         style="width:100%;height:100%;object-fit:cover" />
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center h-100"
+                         style="background:linear-gradient(135deg,#fef3c7,#fde68a)">
+                        <span style="font-size:6rem">📰</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Nội dung -->
+        <span class="badge bg-primary mb-2">@Model.Post.Category</span>
+        <h2 class="fw-bold mb-2">@Model.Post.Title</h2>
+        <div class="text-muted small mb-4">
+            ✍️ @Model.Post.Author.FullName &nbsp;•&nbsp;
+            📅 @Model.Post.CreatedAt.ToString("dd/MM/yyyy")
+        </div>
+
+        <p class="lead text-muted border-start border-4 border-primary ps-3 mb-4">
+            @Model.Post.Summary
+        </p>
+
+        <div class="lh-lg">@Model.Post.Content</div>
+
+        <hr class="my-4">
+        <a asp-page="/News/Index" class="btn btn-outline-secondary btn-sm">← Quay lại tin tức</a>
+    </div>
+
+    
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <h6 class="fw-bold mb-3">📌 Bài viết liên quan</h6>
+                @if (!Model.RelatedPosts.Any())
+                {
+                    <p class="text-muted small">Không có bài viết liên quan</p>
+                }
+                @foreach (var related in Model.RelatedPosts)
+                {
+                    <a asp-page="/News/Detail" asp-route-slug="@related.Slug"
+                       class="d-block text-decoration-none text-dark mb-3 pb-3 border-bottom related-item">
+                        <!-- Ảnh nhỏ -->
+                        <div style="height:80px;overflow:hidden;border-radius:8px;background:#f3f4f6;margin-bottom:8px">
+                            @if (!string.IsNullOrEmpty(related.ThumbnailUrl))
+                            {
+                                <img src="@related.ThumbnailUrl" style="width:100%;height:100%;object-fit:cover" />
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center h-100"
+                                     style="background:linear-gradient(135deg,#fef3c7,#fde68a)">
+                                    <span style="font-size:2rem">📰</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="small fw-semibold">@related.Title</div>
+                        <div class="text-muted" style="font-size:0.75rem">
+                            @related.CreatedAt.ToString("dd/MM/yyyy")
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- Danh mục -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h6 class="fw-bold mb-3">🏷️ Danh mục</h6>
+                @foreach (var cat in new[] { "Bóng đá", "Cầu lông", "Bóng chuyền", "Bóng rổ", "Pickleball", "Tổng hợp" })
+                {
+                    <a asp-page="/News/Index" asp-route-category="@cat"
+                       class="d-block text-decoration-none py-1 border-bottom small text-muted hover-primary">
+                        → @cat
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<h5>Đánh giá</h5>
+<form method="post">
+    <input type="hidden" asp-for="NewReview.PostId" value="@Model.Post.Id" />
+
+    <select asp-for="NewReview.Rating" class="form-control mb-2">
+        <option value="5">5 sao</option>
+        <option value="4">4 sao</option>
+        <option value="3">3 sao</option>
+        <option value="2">2 sao</option>
+        <option value="1">1 sao</option>
+    </select>
+
+    <input asp-for="NewReview.UserName" class="form-control mb-2" placeholder="Tên của bạn" />
+
+    <textarea asp-for="NewReview.Comment" class="form-control mb-2" placeholder="Nhận xét"></textarea>
+
+    <button class="btn btn-primary">Gửi</button>
+</form>
+<hr />
+
+@if (!Model.Reviews.Any())
+{
+    <p>Chưa có đánh giá</p>
+}
+else
+{
+    @foreach (var r in Model.Reviews)
+    {
+        <div class="border p-2 mb-2">
+            <b>@r.UserName</b>
+
+            <div>
+                @for (int i = 0; i < r.Rating; i++)
+                {
+                    <span>⭐</span>
+                }
+            </div>
+
+            <p>@r.Comment</p>
+        </div>
+    }
+}
+
+<style>
+    .related-item:hover {
+        opacity: 0.8;
+    }
+
+    .hover-primary:hover {
+        color: var(--primary) !important;
+    }
+</style>
