@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SanTheThao.Data;
 using SanTheThao.Services;
 using Microsoft.AspNetCore.Authentication.Google;
-//
-using System.Net;
-using System.Net.Mail;
+
 using Microsoft.AspNetCore.Authentication.Facebook;
 
 
@@ -110,49 +108,6 @@ app.UseAuthorization();  // Phân quyền
 
 
 app.MapRazorPages();
-
-
-
-
-
-
-
-// ---- ĐOẠN CODE TEST GỬI MAIL MAILTRAP ----
-try
-{
-    Console.WriteLine("====== ĐANG TIẾN HÀNH TEST GỬI MAIL OTP... ======");
-
-    // 1. Cấu hình đúng thông số từ ảnh Mailtrap của bạn
-    using (var client = new SmtpClient("sandbox.smtp.mailtrap.io", 587))
-    {
-        client.Credentials = new NetworkCredential("8cc69d850f27f9", "4b3fb6bc454ee8");
-        client.EnableSsl = true;
-
-        // 2. Định nghĩa nội dung mail bừa để test
-        var mailMessage = new MailMessage
-        {
-            From = new MailAddress("test@santhethao.com", "Hệ Thống Sân Thể Thao"),
-            Subject = "Test mã OTP Mailtrap thành công!",
-            Body = "<h1>Mã OTP test của bạn là: 999999</h1>",
-            IsBodyHtml = true
-        };
-
-        // Điền đại mail nào cũng được vì Mailtrap sẽ giữ lại hết ở hòm thư ảo
-        mailMessage.To.Add("cuongpipe@gmail.com"); 
-
-        // 3. Thực hiện gửi
-        client.Send(mailMessage);
-        
-        Console.WriteLine("====== GỬI MAIL THÀNH CÔNG! CHECK MAILTRAP ĐI CU ======");
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"====== LỖI RỒI: {ex.Message} ======");
-}
-// -------------------------------------------
-
-
 
 
 

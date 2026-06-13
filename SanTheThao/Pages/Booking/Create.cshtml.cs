@@ -25,72 +25,43 @@ namespace SanTheThao.Pages.Booking
 
         public Court? Court { get; set; }
         public decimal TotalPrice { get; set; }
-        public string? ErrorMessage { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public int CourtId { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string Date { get; set; } = string.Empty;
-
-        [BindProperty(SupportsGet = true)]
-        public string Start { get; set; } = string.Empty;
-
-        [BindProperty(SupportsGet = true)]
-        public string End { get; set; } = string.Empty;
-
-        [BindProperty]
-        public string? Note { get; set; }
+        [BindProperty(SupportsGet = true)] public int CourtId { get; set; }
+        [BindProperty(SupportsGet = true)] public string Date { get; set; } = "";
+        [BindProperty(SupportsGet = true)] public string Start { get; set; } = "";
+        [BindProperty(SupportsGet = true)] public string End { get; set; } = "";
+        [BindProperty] public string? Note { get; set; }
 
         [BindProperty]
         public string PaymentMethod { get; set; } = "Cash";
+        public string? ErrorMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
             Court = await _courtService.GetCourtByIdAsync(CourtId);
             if (Court == null) return NotFound();
 
-            var startTime = TimeOnly.Parse(Start);
-            var endTime   = TimeOnly.Parse(End);
-            var hours     = (decimal)(endTime - startTime).TotalHours;
-            TotalPrice    = Court.PricePerHour * hours;
-
+            TotalPrice = Court.PricePerHour; // Luôn đặt 1 giờ → tiền = giá/giờ
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            //1.Luồng tiền mặt đơn giản, tạo booking rồi chuyển thẳng đến trang Success
             Court = await _courtService.GetCourtByIdAsync(CourtId);
             if (Court == null) return NotFound();
-
-            var bookingDate = DateOnly.Parse(Date);
-            var startTime   = TimeOnly.Parse(Start);
-            var endTime     = TimeOnly.Parse(End);
-
-            var hours  = (decimal)(endTime - startTime).TotalHours;
-            TotalPrice = Court.PricePerHour * hours;
-
-            var available = await _bookingService.IsCourtAvailableAsync(CourtId, bookingDate, startTime, endTime);
-            if (!available)
-            {
-                ErrorMessage = "Khung giờ này đã được đặt, vui lòng chọn giờ khác!";
-                return Page();
-            }
+            TotalPrice = Court.PricePerHour;
 
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
-            var dto = new BookingDto
+            var booking = await _bookingService.CreateBookingAsync(new BookingDto
             {
-                CourtId     = CourtId,
-                UserId      = userId,
-                BookingDate = bookingDate,
-                StartTime   = startTime,
-                EndTime     = endTime,
-                Note        = Note
-            };
-
-            // 1. Tạo đơn đặt sân tạm thời
-            var booking = await _bookingService.CreateBookingAsync(dto);
+                CourtId = CourtId,
+                UserId = userId,
+                BookingDate = DateOnly.Parse(Date),
+                StartTime = TimeOnly.Parse(Start),
+                EndTime = TimeOnly.Parse(End),
+                Note = Note
+            });
 
             // 2. LUỒNG XỬ LÝ MOMO V3 CHUẨN ĐÉT
             if (PaymentMethod == "Momo")
