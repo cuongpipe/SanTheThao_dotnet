@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Bbzk9Lvx5Go=",
+  "dgSpecHash": "G4AIHJMy4D4=",
   "success": true,
-  "projectFilePath": "D:\\dotnet-cuoiky\\SanTheThao\\SanTheThao.csproj",
+  "projectFilePath": "D:\\dotnet-cuoiky\\SanTheThao_dotnet\\SanTheThao\\SanTheThao.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pipe\\.nuget\\packages\\aspnet.security.oauth.github\\10.0.0\\aspnet.security.oauth.github.10.0.0.nupkg.sha512",
     "C:\\Users\\pipe\\.nuget\\packages\\aspnet.security.oauth.zalo\\10.0.0\\aspnet.security.oauth.zalo.10.0.0.nupkg.sha512",

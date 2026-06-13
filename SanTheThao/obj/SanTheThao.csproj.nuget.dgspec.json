@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\dotnet-cuoiky\\SanTheThao\\SanTheThao.csproj": {}
+    "D:\\dotnet-cuoiky\\SanTheThao_dotnet\\SanTheThao\\SanTheThao.csproj": {}
   },
   "projects": {
-    "D:\\dotnet-cuoiky\\SanTheThao\\SanTheThao.csproj": {
+    "D:\\dotnet-cuoiky\\SanTheThao_dotnet\\SanTheThao\\SanTheThao.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\dotnet-cuoiky\\SanTheThao\\SanTheThao.csproj",
+        "projectUniqueName": "D:\\dotnet-cuoiky\\SanTheThao_dotnet\\SanTheThao\\SanTheThao.csproj",
         "projectName": "SanTheThao",
-        "projectPath": "D:\\dotnet-cuoiky\\SanTheThao\\SanTheThao.csproj",
+        "projectPath": "D:\\dotnet-cuoiky\\SanTheThao_dotnet\\SanTheThao\\SanTheThao.csproj",
         "packagesPath": "C:\\Users\\pipe\\.nuget\\packages\\",
-        "outputPath": "D:\\dotnet-cuoiky\\SanTheThao\\obj\\",
+        "outputPath": "D:\\dotnet-cuoiky\\SanTheThao_dotnet\\SanTheThao\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pipe\\AppData\\Roaming\\NuGet\\NuGet.Config"
