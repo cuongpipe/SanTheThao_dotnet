@@ -10,11 +10,17 @@
 # cài thư viện github oauth
 dotnet add package AspNet.Security.OAuth.GitHub
 
+# cài thử viện facebook để đăng nhập với facebook
+dotnet add package Microsoft.AspNetCore.Authentication.Facebook
+
+dùng using Microsoft.AspNetCore.Authentication.Facebook;
 
 # groq với llama-3.1-8b
  https://console.groq.com/keys
 
 # thanh toán với momo API
+
+
 
 
 

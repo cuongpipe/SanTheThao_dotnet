@@ -6,6 +6,7 @@ using SanTheThao.DTOs;
 using SanTheThao.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace SanTheThao.Pages.Auth
 {
@@ -63,9 +64,8 @@ namespace SanTheThao.Pages.Auth
         }
 
 
-
- // =========================================================================
-        // XỬ LÝ ĐĂNG NHẬP EXTERNAL (GOOGLE / GITHUB )
+        // =========================================================================
+        // XỬ LÝ ĐĂNG NHẬP EXTERNAL (GOOGLE / GITHUB / FACEBOOK)
         // =========================================================================
 
         // 1. Khi User bấm nút Google
@@ -77,18 +77,25 @@ namespace SanTheThao.Pages.Auth
         }
 
         // 2. Khi User bấm nút GitHub
-        public IActionResult OnPostChallenge(string provider = "GitHub")
+        public IActionResult OnPostGitHubLogin()
         {
             var redirectUrl = Url.Page("./Login", pageHandler: "ExternalCallback"); 
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-            return Challenge(properties, provider);
+            return Challenge(properties, "GitHub"); // Chuỗi định danh scheme cho GitHub
         }
 
+        // 3. Khi User click vào nút Facebook -> Hướng chung về ExternalCallback luôn
+        public IActionResult OnPostFacebookLogin()
+        {
+            var redirectUrl = Url.Page("./Login", pageHandler: "ExternalCallback");
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, FacebookDefaults.AuthenticationScheme);
+        }
 
-
-        // 4. HÀM CALLBACK CHUNG CHO CẢ GOOGLE VÀ GITHUB- VẢ PHÁT ĂN NGAY
+        // 4. HÀM CALLBACK CHUNG CHO CẢ GOOGLE, GITHUB VÀ FACEBOOK - VẢ PHÁT ĂN NGAY
         public async Task<IActionResult> OnGetExternalCallbackAsync()
         {
+            // Authenticate từ Cookies tạm thời của External (Chứ không phải App Cookie)
             var result = await HttpContext.AuthenticateAsync();
             
             if (!result.Succeeded || result.Principal == null)
@@ -99,7 +106,7 @@ namespace SanTheThao.Pages.Auth
 
             var principal = result.Principal;
 
-            // Bóc tách Email thông minh (Ép bốc mọi ngóc ngách của các bên)
+            // Bóc tách Email thông minh (Ép bốc mọi ngóc ngách của các bên bao gồm cả Facebook)
             var email = principal.FindFirstValue(ClaimTypes.Email) 
                         ?? principal.FindFirstValue("email");
 
@@ -109,8 +116,7 @@ namespace SanTheThao.Pages.Auth
                            ?? principal.FindFirstValue("login") 
                            ?? "User Liên Kết";
 
-            // kiếm tìm xem email này đã tồn tại trong DB chưa, 
-            // nếu chưa có thì tạo mới tài khoản Customer để gắn vào
+            // Xử lý fallback phòng hờ nếu không bốc được email công khai (ví dụ từ github ẩn email)
             if (string.IsNullOrEmpty(email))
             {
                 var nameIdentifier = principal.FindFirstValue(ClaimTypes.NameIdentifier) 
@@ -118,17 +124,17 @@ namespace SanTheThao.Pages.Auth
                 
                 if (!string.IsNullOrEmpty(nameIdentifier))
                 {
-                    email = $"{nameIdentifier}@zalo.com";
+                    email = $"{nameIdentifier}@social-login.com"; // Đổi thành hậu tố chung cho chuyên nghiệp
                 }
             }
 
             if (string.IsNullOrEmpty(email))
             {
-                ErrorMessage = "Không thể lấy thông tin định danh định dạng từ tài khoản liên kết.";
+                ErrorMessage = "Không thể lấy thông tin định danh từ tài khoản liên kết.";
                 return RedirectToPage("./Login");
             }
 
-            // Gọi hàm xử lý bất tử để kiểm tra hoặc lưu mới vào SQL Server
+            // Gọi hàm xử lý bất tử của bạn để kiểm tra hoặc lưu mới vào DB
             var user = await _auth.GetOrCreateUserFromSocialLoginAsync(email, fullName);
 
             // Tạo danh sách quyền (Claims) đồng bộ 100% với hệ thống Sân Thể Thao
