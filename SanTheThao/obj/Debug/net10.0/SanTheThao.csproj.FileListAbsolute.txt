@@ -686,6 +686,6 @@ D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.genruntimeconfig.cache
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\ref\SanTheThao.dll
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\SanTheThao.sourcelink.json
 D:\dotnet-cuoiky\SanTheThao\bin\Debug\net10.0\AspNet.Security.OAuth.Zalo.dll
+D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\fqipa5y5li-{0}-9ed9rx8uza-9ed9rx8uza.gz
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\aa4v8ixfpn-{0}-ub81iekpmp-ub81iekpmp.gz
 D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\wnl44jibjp-{0}-ub81iekpmp-ub81iekpmp.gz
-D:\dotnet-cuoiky\SanTheThao\obj\Debug\net10.0\compressed\fqipa5y5li-{0}-63x9rnblh9-63x9rnblh9.gz
