@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
 using System.Text.Json;
-using SanTheThao.Services; // Nhúng namespace chứa ICourtService của mày
+using SanTheThao.Services; // Nhúng namespace chứa ICourtService của bạn
 
 namespace SanTheThao.Pages.api
 {
@@ -10,10 +10,10 @@ namespace SanTheThao.Pages.api
     public class chatbotModel : PageModel
     {
         private readonly IConfiguration _configuration;
-        // 1. Khai báo ICourtService của mày
+        // 1. Khai báo ICourtService để tương tác với DB
         private readonly ICourtService _courtService; 
 
-        // 2. Inject ICourtService vào thông qua Constructor mặc định
+        // 2. Inject các dịch vụ vào thông qua Constructor
         public chatbotModel(IConfiguration configuration, ICourtService courtService)
         {
             _configuration = configuration;
@@ -38,28 +38,29 @@ namespace SanTheThao.Pages.api
                 }
 
                 // =========================================================================
-                // BÚT PHÁP BỐC DATA TỪ ICOURTSERVICE NÉM VÀO MỒM AI
+                // BÚT PHÁP BỐC DATA TỪ DATABASE NÉM VÀO MỒM AI
                 // =========================================================================
                 
-                // Gọi hàm lấy toàn bộ môn thể thao đang active kèm các sân tương ứng bên trong
+                // Lấy toàn bộ danh mục môn thể thao kèm danh sách sân thuộc môn đó
                 var sportTypes = await _courtService.GetAllSportTypesAsync();
 
                 var dataContext = new StringBuilder();
-                dataContext.AppendLine("Dưới đây là danh sách thông tin sân thực tế đang hoạt động trên hệ thống Sân Thể Thao:");
+                dataContext.AppendLine("Dưới đây là danh sách thông tin sân thực tế trên hệ thống Sân Thể Thao:");
                 dataContext.AppendLine("- Giờ mở cửa hệ thống: 5h00 đến 23h00 hằng ngày.");
 
                 if (sportTypes != null && sportTypes.Count > 0)
                 {
                     foreach (var sport in sportTypes)
                     {
-                        dataContext.AppendLine($"\n* Môn thể thao: {sport.Name}"); // Giả sử thuộc tính tên môn là Name hoặc TenSport
+                        dataContext.AppendLine($"\n* Môn thể thao: {sport.Name}"); 
                         
                         if (sport.Courts != null && sport.Courts.Count > 0)
                         {
-                            foreach (var court in sport.Courts.Where(c => c.IsActive))
+                            // Đã bỏ qua bộ lọc IsActive, lấy toàn bộ danh sách sân được trả về
+                            foreach (var court in sport.Courts)
                             {
-                                // Duyệt qua từng sân trong DB để nối chuỗi text làm Context cho AI đọc
-                                dataContext.AppendLine($"  - Sân: {court.Name} (ID: {court.Id})"); 
+                                // AI sẽ đọc được tên sân và giá tiền của toàn bộ các sân
+                                dataContext.AppendLine($"  - Sân: {court.Name} | Giá: {court.PricePerHour:N0} VNĐ/giờ"); 
                             }
                         }
                         else
@@ -73,14 +74,14 @@ namespace SanTheThao.Pages.api
                     dataContext.AppendLine("- Hiện tại hệ thống đang bảo trì danh sách sân.");
                 }
 
-                // IN LOG RA TERMINAL ĐỂ MÀY XEM CỤM DATA TỪ DB NÓ BIẾN THÀNH TEXT NHƯ THẾ NÀO
+                // IN LOG RA TERMINAL ĐỂ KIỂM TRA CHUỖI TEXT CONTEXT
                 Console.WriteLine($"[DEBUG DATABASE CONTEXT]:\n{dataContext}");
 
                 // =========================================================================
 
                 var url = "https://api.groq.com/openai/v1/chat/completions";
 
-                // 3. Ném cục dataContext (Chuỗi chữ bốc từ DB) vào system content
+                // 3. Ném dữ liệu thô từ DB vào System Prompt của Llama
                 var payload = new
                 {
                     model = "llama-3.1-8b-instant", 
@@ -88,7 +89,11 @@ namespace SanTheThao.Pages.api
                     {
                         new { 
                             role = "system", 
-                            content = $"Bạn là trợ lý ảo thông minh của website Sân Thể Thao. Hãy sử dụng thông tin danh sách sân thực tế lấy từ Database dưới đây để tư vấn cho người dùng một cách chính xác, ngắn gọn và lịch sự bằng tiếng Việt. Nếu người dùng hỏi những thông tin ngoài dữ liệu được cung cấp, hãy bảo họ liên hệ hotline để biết thêm chi tiết.\n\nDỮ LIỆU HỆ THỐNG:\n{dataContext}" 
+                            content = $"Bạn là trợ lý ảo thông minh của website Sân Thể Thao. Hãy sử dụng thông tin danh sách sân và giá tiền lấy từ Database dưới đây để tư vấn cho người dùng một cách chính xác, ngắn gọn và lịch sự bằng tiếng Việt. Nếu người dùng hỏi những thông tin ngoài dữ liệu được cung cấp, hãy bảo họ liên hệ hotline: 0901 234 567 để biết thêm chi tiết.\n\n" +
+                            $"HƯỚNG DẪN NGƯỜI DÙNG ĐẶT SÂN:\n" +
+                            $"- Nhắc nhở người dùng có thể đặt sân trực tuyến bằng cách nhấn vào mục 'Đặt sân' trên thanh điều hướng (Navbar/Header) của website.\n" +
+                            $"- Hướng dẫn họ các bước đặt sân đơn giản bao gồm: 1. Chọn sân -> 2. Chọn khung giờ muốn đặt -> 3. Chọn phương thức thanh toán -> 4. Thêm ghi chú nếu cần -> 5. Nhấn 'Xác nhận đặt sân'.\n\n" +
+                            $"DỮ LIỆU HỆ THỐNG:\n{dataContext}"
                         },
                         new { role = "user", content = request.Message }
                     }
