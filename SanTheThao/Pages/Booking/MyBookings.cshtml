@@ -29,21 +29,19 @@
 }
 else
 {
-    <!-- Filter theo trạng thái -->
-    <div class="d-flex gap-2 mb-3 flex-wrap">
+    <div class="d-flex gap-1 mb-4 border-bottom status-filter-container">
         @{
             var all       = Model.Bookings.Count;
             var pending   = Model.Bookings.Count(b => b.Status == BookingStatus.Pending);
             var confirmed = Model.Bookings.Count(b => b.Status == BookingStatus.Confirmed);
             var cancelled = Model.Bookings.Count(b => b.Status == BookingStatus.Cancelled);
         }
-        <span class="badge bg-secondary fs-6 fw-normal px-3 py-2">Tất cả (@all)</span>
-        <span class="badge bg-warning text-dark fs-6 fw-normal px-3 py-2">Chờ xác nhận (@pending)</span>
-        <span class="badge bg-success fs-6 fw-normal px-3 py-2">Đã xác nhận (@confirmed)</span>
-        <span class="badge bg-danger fs-6 fw-normal px-3 py-2">Đã hủy (@cancelled)</span>
+        <button class="btn-filter active" data-filter="all">Tất cả (@all)</button>
+        <button class="btn-filter" data-filter="pending">Chờ xác nhận (@pending)</button>
+        <button class="btn-filter" data-filter="confirmed">Đã xác nhận (@confirmed)</button>
+        <button class="btn-filter" data-filter="cancelled">Đã hủy (@cancelled)</button>
     </div>
 
-    <!-- Danh sách đơn -->
     <div class="d-flex flex-column gap-3">
         @foreach (var booking in Model.Bookings)
         {
@@ -62,11 +60,11 @@ else
                 _ => ""
             };
 
-            <div class="card border-0 shadow-sm @(booking.Status == BookingStatus.Cancelled ? "opacity-75" : "")">
+            <div class="card border-0 shadow-sm booking-item @(booking.Status == BookingStatus.Cancelled ? "opacity-75" : "")"
+                 data-status="@booking.Status.ToString().ToLower()">
                 <div class="card-body">
                     <div class="row align-items-center">
 
-                        <!-- Icon + tên sân -->
                         <div class="col-md-4">
                             <div class="d-flex align-items-center gap-2">
                                 <span style="font-size:2rem">@booking.Court.SportType.Icon</span>
@@ -77,7 +75,6 @@ else
                             </div>
                         </div>
 
-                        <!-- Ngày giờ -->
                         <div class="col-md-3 mt-2 mt-md-0">
                             <div class="fw-semibold">
                                 @booking.BookingDate.ToString("dd/MM/yyyy")
@@ -87,7 +84,6 @@ else
                             </div>
                         </div>
 
-                        <!-- Giá + trạng thái -->
                         <div class="col-md-3 mt-2 mt-md-0">
                             <div class="fw-bold text-success">
                                 @booking.TotalPrice.ToString("N0") VNĐ
@@ -95,7 +91,6 @@ else
                             <span class="badge bg-@statusClass">@statusText</span>
                         </div>
 
-                        <!-- Nút hủy -->
                         <div class="col-md-2 mt-2 mt-md-0 text-md-end">
                             <div class="text-muted small mb-1">#@booking.Id.ToString("D6")</div>
                             @if (booking.Status == BookingStatus.Pending)
@@ -120,4 +115,58 @@ else
             </div>
         }
     </div>
+}
+
+<style>
+    /* Thanh bọc cuộn ngang nếu màn hình điện thoại bị thiếu chỗ */
+    .status-filter-container {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    /* Nút bấm mặc định: Không viền, nền trong suốt */
+    .btn-filter {
+        background: transparent;
+        border: none;
+        padding: 10px 15px;
+        color: var(--dark3);
+    }
+    
+    /* Khi rê chuột hoặc khi được Active: Đổi chữ sang màu xanh và gạch chân đơn giản */
+    .btn-filter:hover, .btn-filter.active {
+        color: var(--p1);
+        text-decoration: underline;
+        font-weight: bold;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filters = document.querySelectorAll(".btn-filter");
+            const bookingItems = document.querySelectorAll(".booking-item");
+
+            filters.forEach(filter => {
+                filter.addEventListener("click", function () {
+                    // 1. Chuyển đổi class active giữa các nút tab
+                    filters.forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+
+                    // 2. Lấy giá trị bộ lọc (all, pending, confirmed, cancelled)
+                    const filterValue = this.getAttribute("data-filter");
+
+                    // 3. Thực hiện ẩn/hiện card mà không cần tải lại trang
+                    bookingItems.forEach(item => {
+                        const itemStatus = item.getAttribute("data-status");
+
+                        if (filterValue === "all" || itemStatus === filterValue) {
+                            item.style.setProperty('display', 'block', 'important');
+                        } else {
+                            item.style.setProperty('display', 'none', 'important');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 }
