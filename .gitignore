@@ -1,3 +1,9 @@
 .idx/
 my.cnf
 sql.sql
+SanTheThao/appsettings.json
+/SanTheThao/bin/Debug
+SanTheThao/obj/project.assets.json
+SanTheThao/obj/project.nuget.cache
+SanTheThao/obj/SanTheThao.csproj.nuget.dgspec.json
+SanTheThao/obj/SanTheThao.csproj.nuget.g.props
