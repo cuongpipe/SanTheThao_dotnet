@@ -23,14 +23,14 @@ namespace SanTheThao.Pages.Courts
         {
             var sportTypes = await _courtService.GetAllSportTypesAsync();
 
-            // Lấy tất cả sân (giống Index của bạn)
+            // Lấy tất cả sân
             foreach (var sport in sportTypes)
             {
                 var list = await _courtService.GetCourtsBySportTypeAsync(sport.Id);
                 Courts.AddRange(list);
             }
 
-            // 🔥 LỌC THEO TÊN (đúng với code bạn)
+            //  Lọc theo tên
             if (!string.IsNullOrEmpty(Search))
             {
                 Courts = Courts
